@@ -1,5 +1,5 @@
 # AllDutchZipcodeFinder
-Find all dutch zipcodes between 2 4 digit numbers
+Find all dutch zipcodes between 4 digit numbers
 
 This is a script I wrote in my free time to learn more about Python.
 
