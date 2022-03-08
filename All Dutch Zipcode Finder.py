@@ -8,9 +8,9 @@ def submit (start_input, end_input):
     check = digitCheck(start_input, end_input)
     if check == 0:
         label_error = tk.Label(root, text= 'Not 4 numbers entered in field', fg='green', font=('helvetica', 12, 'bold'))
-        canvas1.create_window(150, 200, window=label_error)
+        canvas1.create_window(200, 210, window=label_error)
     else:
-        generateFile()
+        generateFile(start_input, end_input)
 
 def digitCheck (start, end):
     if len(start) == 4 and start.isdigit():
@@ -23,7 +23,7 @@ def digitCheck (start, end):
         check = 0
     return check
 
-def generateFile ():
+def generateFile (start, end):
     f = open("zipcode_temp.txt", "w")
 
     letters = list(string.ascii_uppercase)
@@ -66,7 +66,7 @@ def generateFile ():
 
 root= tk.Tk()
 
-canvas1 = tk.Canvas(root)
+canvas1 = tk.Canvas(root, width = 400, height = 220)
 canvas1.pack()
 
 info1 = tk.Label(text="This program shows all possible dutch zipcodes in a range")
@@ -80,14 +80,14 @@ end_info = tk.Label(text="last zipcode(4 numbers): ")
 end_box = tk.Entry()
 end_input = end_box.get()
 
-submit = tk.Button(text='submit',command=submit(start_input, end_input), bg='brown',fg='white')
+submit = tk.Button(text='submit',command=submit(start_input, end_input))
 
-info1.pack()
-info2.pack()
-start_info.pack()
-start_box.pack()
-end_info.pack()
-end_box.pack()
-submit.pack()
+canvas1.create_window(200, 10, window=info1)
+canvas1.create_window(200, 30, window=info2)
+canvas1.create_window(200, 60, window=start_info)
+canvas1.create_window(200, 90, window=start_box)
+canvas1.create_window(200, 120, window=end_info)
+canvas1.create_window(200, 150, window=end_box)
+canvas1.create_window(200, 180, window=submit)
 
 canvas1.mainloop()
