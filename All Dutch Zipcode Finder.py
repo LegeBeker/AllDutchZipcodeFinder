@@ -4,18 +4,20 @@ import urllib.request
 import tkinter as tk
 from pathlib import Path
 
-def submit (start_input, end_input):
-    check = digitCheck(start_input, end_input)
+def submit ():
+    check = digitCheck()
     if check == 0:
-        label_error = tk.Label(root, text= 'Not 4 numbers entered in field', fg='green', font=('helvetica', 12, 'bold'))
-        canvas1.create_window(200, 210, window=label_error)
+        message_value["text"] = f'Not 4 numbers entered in field'
+        message_value.pack()
     else:
-        generateFile(start_input, end_input)
+        message_value["text"] = f''
+        message_value.pack()
+        generateFile()
 
-def digitCheck (start, end):
-    if len(start) == 4 and start.isdigit():
+def digitCheck ():
+    if len(start_input) == 4 and int(start_input).isdigit():
         check = 1
-        if len(end) == 4 and end.isdigit():
+        if len(end_input) == 4 and int(end_input).isdigit():
             check = 1
         else:
             check = 0
@@ -23,14 +25,14 @@ def digitCheck (start, end):
         check = 0
     return check
 
-def generateFile (start, end):
+def generateFile ():
     f = open("zipcode_temp.txt", "w")
 
     letters = list(string.ascii_uppercase)
 
     for l in letters:
         for e in letters:
-            for n in range(int(start), (int(end) + 1)):
+            for n in range(int(start_input), (int(end_input) + 1)):
                 f.write(str(n) + l + e + "\n")
     f.close
 
@@ -66,28 +68,25 @@ def generateFile (start, end):
 
 root= tk.Tk()
 
-canvas1 = tk.Canvas(root, width = 400, height = 220)
+root.title("All Dutch Zipcode Finder")
+
+canvas1 = tk.Canvas(root, width = 400, height = 0)
 canvas1.pack()
 
-info1 = tk.Label(text="This program shows all possible dutch zipcodes in a range")
-info2 = tk.Label(text="Made by Volkan Welp out of boredom")
+tk.Label(text="This program shows all possible dutch zipcodes in a range\nMade by Volkan Welp out of boredom").pack()
 
-start_info = tk.Label(text="Start zipcode range(4 numbers): ")
+tk.Label(text="Start zipcode range(4 numbers): ").pack()
 start_box = tk.Entry()
+start_box.pack()
 start_input = start_box.get()
 
-end_info = tk.Label(text="last zipcode(4 numbers): ")
+tk.Label(text="last zipcode(4 numbers): ").pack()
 end_box = tk.Entry()
+end_box.pack()
 end_input = end_box.get()
 
-submit = tk.Button(text='submit',command=submit(start_input, end_input))
-
-canvas1.create_window(200, 10, window=info1)
-canvas1.create_window(200, 30, window=info2)
-canvas1.create_window(200, 60, window=start_info)
-canvas1.create_window(200, 90, window=start_box)
-canvas1.create_window(200, 120, window=end_info)
-canvas1.create_window(200, 150, window=end_box)
-canvas1.create_window(200, 180, window=submit)
+tk.Button(text='submit',command=submit).pack()
+message_value = tk.Label(text="", fg='red', font=('helvetica', 12, 'bold'))
+message_value.pack()
 
 canvas1.mainloop()
