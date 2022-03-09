@@ -36,8 +36,8 @@ def generateFile ():
                 f.write(str(n) + l + e + "\n")
     f.close
 
-    print("loading...")
-    print("\n")
+    message_value["text"] = f'Loading...'
+    message_value.pack()
 
     url = 'https://volkanwelp.com/documents/zipcodes.txt'
     urllib.request.urlretrieve(url, 'zipcodes.txt')
@@ -57,14 +57,15 @@ def generateFile ():
         f.write(line)
 
     f.close
-    print("output generated")
+    message_value["text"] = f'Output Generated.'
+    message_value.pack()
 
-    print("Removing temporary files...")
+    message_value["Removing temporary files..."] = f''
+    message_value.pack()
     os.remove("zipcode_temp.txt")
-    os.remove("zipcodes.txt")
-    print("Done.")
-    print("The output file can be found on your desktop.")
-    input("Press Enter to close this terminal. Thanks for using my script!")
+    os.remove("zipcodes.txt")    
+    message_value["text"] = f'The output file can be found on your desktop.\nYou can close this window. Thanks for using my script!'
+    message_value.pack()
 
 root= tk.Tk()
 
