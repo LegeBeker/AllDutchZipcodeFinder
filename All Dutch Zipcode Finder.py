@@ -4,89 +4,140 @@ import urllib.request
 import tkinter as tk
 from pathlib import Path
 
-def submit ():
-    check = digitCheck()
-    if check == 0:
-        message_value["text"] = f'Not 4 numbers entered in field'
-        message_value.pack()
-    else:
-        message_value["text"] = f''
-        message_value.pack()
-        generateFile()
+start_input = ''
+end_input = ''
 
-def digitCheck ():
-    if len(start_input) == 4 and int(start_input).isdigit():
-        check = 1
-        if len(end_input) == 4 and int(end_input).isdigit():
+
+class Functions:
+    def submit():
+        start_input = start_box.get()
+        end_input = end_box.get()
+        check = Functions.digitCheck(start_input, end_input)
+        if check == 0:
+            message_value["text"] = f'Not 4 numbers entered in field'
+            message_value.pack()
+        elif check == 1:
+            message_value["text"] = f"Start value can't be higher than end value"
+            message_value.pack()
+        elif check == 2:
+            message_value["text"] = f"Start and end value can't be the same"
+            message_value.pack()
+        elif check == 3:
+            message_value["text"] = f'Not 4 numbers entered in field'
+            message_value.pack()
+            Functions.generateFile(start_input, end_input)
+
+    def digitCheck(start, end):
+        if (start > end):
             check = 1
+        elif (start == end):
+            check = 2
+        elif len(start) == 4 and start.isdigit() and len(end) == 4 and end.isdigit():
+            check = 3
         else:
             check = 0
-    else:
-        check = 0
-    return check
+        return check
 
-def generateFile ():
-    f = open("zipcode_temp.txt", "w")
+    def generateFile(start, end):
+        home = str(Path.home())
+        path_check = 0
 
-    letters = list(string.ascii_uppercase)
+        i1 = 0
+        i2 = 0
 
-    for l in letters:
-        for e in letters:
-            for n in range(int(start_input), (int(end_input) + 1)):
-                f.write(str(n) + l + e + "\n")
-    f.close
+        temp1 = "zipcode_temp.txt"
+        temp2 = "zipcodes.txt"
 
-    message_value["text"] = f'Loading...'
-    message_value.pack()
+        while path_check != 1:
+            path_temp1 = Path(temp1)
+            path_temp2 = Path(temp2)
+            temp1_check = path_temp1.is_file()
+            temp2_check = path_temp2.is_file()
+            if (temp1_check == True):
+                i1 = i1 + 1
+                newtemp1 = temp1.split('.')
+                newtemp1[0] = newtemp1[0] + str(i1) + '.'
+                temp1 = ''
+                for v in newtemp1:
+                    temp1 += v
 
-    url = 'https://volkanwelp.com/documents/zipcodes.txt'
-    urllib.request.urlretrieve(url, 'zipcodes.txt')
+            elif (temp2_check == True):
+                i2 = i2 + 1
+                newtemp2 = temp2.split('.')
+                newtemp2[0] = newtemp2[0] + str(i2) + '.'
+                temp2 = ''
+                for v in newtemp2:
+                    temp2 += v
+            else:
+                path_check = 1
 
-    with open('zipcodes.txt', 'r') as file1:
-        with open('zipcode_temp.txt', 'r') as file2:
-            same = set(file1).intersection(file2)
+        f = open(temp1, "w")
 
-    same.discard('\n')
+        letters = list(string.ascii_uppercase)
 
-    home = str(Path.home())
-    path = os.path.join(home, "Desktop/zipcode_output.txt")
+        for l in letters:
+            for e in letters:
+                for n in range(int(start), (int(end) + 1)):
+                    f.write(str(n) + l + e + "\n")
+        f.close
 
-    f = open(path, "w")
+        message_value["text"] = f'Loading...'
+        message_value["fg"] = 'green'
+        message_value.pack()
 
-    for line in same:
-        f.write(line)
+        url = 'https://volkanwelp.com/documents/zipcodes.txt'
+        urllib.request.urlretrieve(url, temp2)
 
-    f.close
-    message_value["text"] = f'Output Generated.'
-    message_value.pack()
+        with open(temp2, 'r') as file1:
+            with open(temp1, 'r') as file2:
+                same = set(file1).intersection(file2)
 
-    message_value["Removing temporary files..."] = f''
-    message_value.pack()
-    os.remove("zipcode_temp.txt")
-    os.remove("zipcodes.txt")    
-    message_value["text"] = f'The output file can be found on your desktop.\nYou can close this window. Thanks for using my script!'
-    message_value.pack()
+        same.discard('\n')
 
-root= tk.Tk()
+        output = os.path.join(
+            home, "Desktop/zipcode_output_" + str(start) + "+" + str(end) + ".txt")
+
+        f = open(output, "w")
+
+        for line in same:
+            f.write(line)
+
+        f.close
+        message_value["text"] = f'Output Generated.'
+        message_value.pack()
+
+        message_value["text"] = f'Removing temporary files...'
+        message_value.pack()
+
+        os.remove(temp1)
+        os.remove(temp2)
+
+        message_value["text"] = f'The output file for ' + str(start) + " to " + str(
+            end) + ' can be found on your desktop.\nYou can close this window, or you can get another result.\nThanks for using my program! See my other projects on Github: LegeBeker.'
+        message_value.pack()
+
+
+root = tk.Tk()
 
 root.title("All Dutch Zipcode Finder")
+root.tk.call('wm', 'iconphoto', root._w,
+             tk.PhotoImage(file='Icons/favicon.ico'))
 
-canvas1 = tk.Canvas(root, width = 400, height = 0)
+canvas1 = tk.Canvas(root, width=400, height=0)
 canvas1.pack()
 
-tk.Label(text="This program shows all possible dutch zipcodes in a range\nMade by Volkan Welp out of boredom").pack()
+tk.Label(text="This program shows all possible dutch zipcodes in a range\nMade by Volkan Welp out of boredom.").pack()
 
 tk.Label(text="Start zipcode range(4 numbers): ").pack()
 start_box = tk.Entry()
 start_box.pack()
-start_input = start_box.get()
+
 
 tk.Label(text="last zipcode(4 numbers): ").pack()
 end_box = tk.Entry()
 end_box.pack()
-end_input = end_box.get()
 
-tk.Button(text='submit',command=submit).pack()
+tk.Button(text='submit', command=Functions.submit).pack()
 message_value = tk.Label(text="", fg='red', font=('helvetica', 12, 'bold'))
 message_value.pack()
 
