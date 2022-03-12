@@ -1,4 +1,7 @@
 # AllDutchZipcodeFinder
+
+Most recent release: https://github.com/LegeBeker/AllDutchZipcodeFinder/releases/tag/0.1.1
+
 Find all dutch zipcodes between 4 digit numbers
 
 This is a program I wrote in my free time to learn more about Python.
