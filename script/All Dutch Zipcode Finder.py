@@ -7,6 +7,8 @@ from pathlib import Path
 start_input = ''
 end_input = ''
 
+home = str(Path.home())
+
 
 class Functions:
     def submit():
@@ -14,7 +16,7 @@ class Functions:
         end_input = end_box.get()
         check = Functions.digitCheck(start_input, end_input)
         if check == 0:
-            message_value["text"] = f'Not 4 numbers entered in field'
+            message_value["text"] = f'Not 4 numbers entered in field(s)'
             message_value.pack()
         elif check == 1:
             message_value["text"] = f"Start value can't be higher than end value"
@@ -23,7 +25,7 @@ class Functions:
             message_value["text"] = f"Start and end value can't be the same"
             message_value.pack()
         elif check == 3:
-            message_value["text"] = f'Not 4 numbers entered in field'
+            message_value["text"] = f''
             message_value.pack()
             Functions.generateFile(start_input, end_input)
 
@@ -39,36 +41,10 @@ class Functions:
         return check
 
     def generateFile(start, end):
-        path_check = 0
-
-        i1 = 0
-        i2 = 0
-
-        temp1 = "zipcode_temp.txt"
-        temp2 = "zipcodes.txt"
-
-        while path_check != 1:
-            path_temp1 = Path(temp1)
-            path_temp2 = Path(temp2)
-            temp1_check = path_temp1.is_file()
-            temp2_check = path_temp2.is_file()
-            if (temp1_check == True):
-                i1 = i1 + 1
-                newtemp1 = temp1.split('.')
-                newtemp1[0] = newtemp1[0] + str(i1) + '.'
-                temp1 = ''
-                for v in newtemp1:
-                    temp1 += v
-
-            elif (temp2_check == True):
-                i2 = i2 + 1
-                newtemp2 = temp2.split('.')
-                newtemp2[0] = newtemp2[0] + str(i2) + '.'
-                temp2 = ''
-                for v in newtemp2:
-                    temp2 += v
-            else:
-                path_check = 1
+        temp1 = os.path.join(
+            home, "Desktop/zipcode_temp_" + str(start) + "+" + str(end) + ".txt")
+        temp2 = os.path.join(
+            home, "Desktop/zipcodes_" + str(start) + "+" + str(end) + ".txt")
 
         f = open(temp1, "w")
 
@@ -92,8 +68,6 @@ class Functions:
                 same = set(file1).intersection(file2)
 
         same.discard('\n')
-
-        home = str(Path.home())
 
         output = os.path.join(
             home, "Desktop/zipcode_output_" + str(start) + "+" + str(end) + ".txt")

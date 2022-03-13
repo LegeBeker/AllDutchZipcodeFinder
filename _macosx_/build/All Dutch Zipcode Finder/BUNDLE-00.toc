@@ -1,0 +1,5 @@
+([('All Dutch Zipcode Finder',
+   '/Users/volkan/Library/Mobile '
+   'Documents/com~apple~CloudDocs/Projects/AllDutchZipcodeFinder/_macosx_/dist/All '
+   'Dutch Zipcode Finder',
+   'EXECUTABLE')],)
