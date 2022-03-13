@@ -37,8 +37,8 @@ exe = EXE(pyz,
           disable_windowed_traceback=False,
           target_arch=None,
           codesign_identity=None,
-          entitlements_file=None )
+          entitlements_file=None , icon='icons/favicon.ico')
 app = BUNDLE(exe,
              name='All Dutch Zipcode Finder.app',
-             icon=None,
+             icon='icons/favicon.ico',
              bundle_identifier=None)
