@@ -50,9 +50,9 @@ class Functions:
 
         letters = list(string.ascii_uppercase)
 
-        for l in letters:
-            for e in letters:
-                for n in range(int(start), (int(end) + 1)):
+        for n in range(int(start), (int(end) + 1)):
+            for l in letters:
+                for e in letters:
                     f.write(str(n) + l + e + "\n")
         f.close
 
@@ -63,8 +63,8 @@ class Functions:
         url = 'https://volkanwelp.com/documents/zipcodes.txt'
         urllib.request.urlretrieve(url, temp2)
 
-        with open(temp2, 'r') as file1:
-            with open(temp1, 'r') as file2:
+        with open(temp1, 'r') as file1:
+            with open(temp2, 'r') as file2:
                 same = set(file1).intersection(file2)
 
         same.discard('\n')
@@ -95,8 +95,6 @@ class Functions:
 root = tk.Tk()
 
 root.title("All Dutch Zipcode Finder")
-# root.tk.call('wm', 'iconphoto', root._w,
-#              tk.PhotoImage(file='/Icons/favicon.ico'))
 
 canvas1 = tk.Canvas(root, width=400, height=0)
 canvas1.pack()
