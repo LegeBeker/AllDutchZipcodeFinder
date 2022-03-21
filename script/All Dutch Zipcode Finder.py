@@ -22,9 +22,6 @@ class Functions:
             message_value["text"] = f"Start value can't be higher than end value"
             message_value.pack()
         elif check == 2:
-            message_value["text"] = f"Start and end value can't be the same"
-            message_value.pack()
-        elif check == 3:
             message_value["text"] = f''
             message_value.pack()
             Functions.generateFile(start_input, end_input)
@@ -32,10 +29,8 @@ class Functions:
     def digitCheck(start, end):
         if (start > end):
             check = 1
-        elif (start == end):
-            check = 2
         elif len(start) == 4 and start.isdigit() and len(end) == 4 and end.isdigit():
-            check = 3
+            check = 2
         else:
             check = 0
         return check
@@ -65,7 +60,7 @@ class Functions:
 
         with open(temp1, 'r') as file1:
             with open(temp2, 'r') as file2:
-                same = set(file1).intersection(file2)
+                same = set(file1) & set(file2)
 
         same.discard('\n')
 
